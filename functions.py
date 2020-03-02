@@ -1,6 +1,7 @@
 import json
 import time
 import sqlite3
+import datetime
 import requests
 
 def get_payment_link(number, sum, comment=""):
@@ -64,8 +65,23 @@ class DataBase:
 		self.cursor.execute(sql, values)
 
 
+	def pay(self, chat_id, sum):
+		sql = "UPDATE Users SET sum_pay = sum_pay + {} WHERE chat_id = {}".format(sum, chat_id)
+		self.cursor.execute(sql)
+
+
 	def get_all_users(self):
+		users = []
+
 		sql = "SELECT * FROM Users"
 		self.cursor.execute(sql)
-		users = self.cursor.fetchall()
+		for id, chat_id, sum_pay, reg_time, referer in self.cursor.fetchall():
+			reg_time = datetime.datetime.fromtimestamp(reg_time)
+
+			mes = "ID в боте: {}\nchat_id: {}\nСумма пополнений: {}\nДата регистрации: {}\nРеферер: {}"
+			mes = mes.format(id, chat_id, sum_pay, reg_time, referer)
+			
+			users.append(mes)
+
+
 		return users

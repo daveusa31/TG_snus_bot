@@ -1,3 +1,4 @@
+import time
 import config
 import telebot
 import datetime
@@ -33,13 +34,11 @@ if __name__ == "__main__":
         error = run_bot_loop()
         logger("Restart") 
 
-        try:
-            with open("error.txt", "w", encoding="utf-8") as f: f.write(error)
-            doc = open("error.txt", "rb")
-            bot.send_document(config.ADMIN_ID, doc)
-            doc.close()
-        except: 
-            pass
+        with open("error.txt", "w", encoding="utf-8") as f: f.write(error)
+        doc = open("error.txt", "rb")
+        bot.send_document(config.admin_id, doc)
+        doc.close()
+
 
         time.sleep(10)
 

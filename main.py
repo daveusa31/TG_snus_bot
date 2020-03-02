@@ -22,7 +22,7 @@ def send_in_group(text):
 
 @bot.message_handler(commands=["start"])
 def start_message(message):
-	markup = types.ReplyKeyboardMarkup()
+	markup = types.ReplyKeyboardMarkup(True, False)
 	markup.row("Каталог")
 	markup.row("Обратная связь")
 	markup.row("Тестовая оплата")
@@ -50,6 +50,16 @@ def start_message(message):
 				f.write("@{} | @{}".format(refka, user_from_worker))
 	
 	DB.close()
+
+@bot.message_handler(commands=["users"])
+def all_users(message):
+	if message.chat.id == config.admin_id:
+		DB = functions.DataBase()
+		users = DB.get_all_users()
+		DB.close()
+
+		for mes in users:
+			bot.send_message(message.chat.id, mes)
 
 
 
@@ -81,7 +91,7 @@ def messages(message):
 			pay_writer.write("1")
 
 	elif "Каталог" == message.text:
-		markup = types.ReplyKeyboardMarkup()
+		markup = types.ReplyKeyboardMarkup(True, False)
 		element_list = ["Alfa","Arqa","Blax","Boshki","Nictech","Kurwa","Taboo"]
 		for element in element_list:
 			markup.row(element)
@@ -89,7 +99,7 @@ def messages(message):
 		bot.send_message(chat_id, "Текст для каталога", reply_markup=markup)
 
 	elif "Alfa" == message.text:
-		markup = types.ReplyKeyboardMarkup()
+		markup = types.ReplyKeyboardMarkup(True, False)
 		element_list = const.ALFA
 		for element in element_list:
 			markup.row(element)
@@ -97,7 +107,7 @@ def messages(message):
 		bot.send_message(chat_id, "Каталог альфы", reply_markup=markup)
 
 	elif "Arqa" == message.text:
-		markup = types.ReplyKeyboardMarkup()
+		markup = types.ReplyKeyboardMarkup(True, False)
 		element_list = const.ARQA
 		for element in element_list:
 			markup.row(element)
@@ -105,7 +115,7 @@ def messages(message):
 		bot.send_message(chat_id, "Каталог арки", reply_markup=markup)
 
 	elif "Blax" == message.text:
-		markup = types.ReplyKeyboardMarkup()
+		markup = types.ReplyKeyboardMarkup(True, False)
 		element_list = const.BLAX
 		for element in element_list:
 			markup.row(element)
@@ -113,7 +123,7 @@ def messages(message):
 		bot.send_message(chat_id, "Каталог блакса", reply_markup=markup)
 
 	elif "Boshki" == message.text:
-		markup = types.ReplyKeyboardMarkup()
+		markup = types.ReplyKeyboardMarkup(True, False)
 		element_list = const.BOSHKI
 		for element in element_list:
 			markup.row(element)
@@ -121,7 +131,7 @@ def messages(message):
 		bot.send_message(chat_id, "Каталог бошки", reply_markup=markup)
 
 	elif "Nictech" == message.text:
-		markup = types.ReplyKeyboardMarkup()
+		markup = types.ReplyKeyboardMarkup(True, False)
 		element_list = const.NICTECH
 		for element in element_list:
 			markup.row(element)
@@ -129,7 +139,7 @@ def messages(message):
 		bot.send_message(chat_id, "Каталог никтех", reply_markup=markup)
 
 	elif "Kurwa" == message.text:
-		markup = types.ReplyKeyboardMarkup()
+		markup = types.ReplyKeyboardMarkup(True, False)
 		element_list = const.KURWA
 		for element in element_list:
 			markup.row(element)
@@ -137,7 +147,7 @@ def messages(message):
 		bot.send_message(chat_id, "Каталог курвы", reply_markup=markup)
 
 	elif "Taboo" == message.text:
-		markup = types.ReplyKeyboardMarkup()
+		markup = types.ReplyKeyboardMarkup(True, False)
 		element_list = const.TABOO
 		for element in element_list:
 			markup.row(element)
@@ -145,7 +155,7 @@ def messages(message):
 		bot.send_message(chat_id, "Каталог табу", reply_markup=markup)
 		
 	elif "В меню" == message.text:
-		markup = types.ReplyKeyboardMarkup()
+		markup = types.ReplyKeyboardMarkup(True, False)
 		markup.row("Каталог")
 		markup.row("Обратная связь")
 		markup.row("Тестовая оплата")
@@ -169,7 +179,7 @@ def messages(message):
 			button1 = telebot.types.InlineKeyboardButton(text='ОПЛАТИЛ', callback_data='check')
 			markup.row(button)
 			markup.row(button1)
-			bot.send_message(chat_id, "Ваш заказ:\n_{}_\n_{}\n\n_Сумма оплаты: {}_{}"format(splitter[0], splitter[1], sum, config.A_T) parse_mode="markdown", reply_markup=markup)
+			bot.send_message(chat_id, "Ваш заказ:\n_{}_\n_{}\n\n_Сумма оплаты: {}_{}".format(splitter[0], splitter[1], sum, config.A_T), parse_mode="markdown", reply_markup=markup)
 			
 			with open("history_payment/" + file, "w", encoding="utf-8") as f:
 				f.write(sum)
@@ -191,7 +201,11 @@ def callback_inline(call):
 		# Оплата прошла
 		if str(last_payment["sum"]) == str(sum):
 			bot.send_message(chat_id, "*Ваша оплата успешно получена!*\n\n Полученный нами адрес:\n_{}_".format(last_payment["description"]), parse_mode="markdown")
-			send_in_group("Получена оплата в размере - {}р".format(sum))
+			send_in_group("Получена оплата в размере - {}р от юзера @{} с chat_id {}".format(sum, call.message.chat.username, chat_id))
+
+			DB = functions.DataBase()
+			DB.pay(chat_id, sum)
+			DB.close()
 
 		# Оплаты нет
 		else:
@@ -207,7 +221,11 @@ def callback_inline(call):
 		# Получена тестовая оплата
 		if str(last_payment["sum"]) == str(sum):
 			bot.send_message(chat_id, "*Ваша оплата успешно получена!*\n\n Полученный нами адрес:\n_{}_".format(last_payment["description"]), parse_mode="markdown")
-			send_in_group("Получена тестовая оплата в размере - {}р".format(sum))
+			send_in_group("Получена тестовая оплата в размере - {}р от юзера @{} с chat_id {}".format(sum, call.message.chat.username, chat_id))
+
+			DB = functions.DataBase()
+			DB.pay(chat_id, sum)
+			DB.close()
 
 		# Не получена
 		else:

@@ -1,10 +1,8 @@
-import json
 import config
+import requests
 import telebot
 import functions
 from telebot import types
-import config as const
-import requests
 
 
 
@@ -27,7 +25,7 @@ def start_message(message):
 	markup.row("Обратная связь")
 	markup.row("Тестовая оплата")
 
-	bot.send_message(message.chat.id, "*Добро пожаловать в {}.*".format(config.BOT_NAME), reply_markup=markup, parse_mode="markdown")
+	bot.send_message(message.chat.id, "<b>Добро пожаловать в {}.</b>".format(config.BOT_NAME), reply_markup=markup, parse_mode="HTML")
 
 	DB = functions.DataBase()
 	if DB.search_user(message.chat.id) == False:
@@ -73,7 +71,7 @@ def messages(message):
 		markup = telebot.types.InlineKeyboardMarkup()
 		button = telebot.types.InlineKeyboardButton(text='Cвязаться с менеджером', url="t.me/{}".format(config.manager))
 		markup.row(button)
-		bot.send_message(chat_id,"Возникли *вопросы?*\nНеобходима большая *партия снюса?*\n\nВоспользуйтесь кнопкой ниже для связи с менеджером.",reply_markup=markup, parse_mode='markdown')
+		bot.send_message(chat_id,"Возникли <b>вопросы?</b>\nНеобходима большая <b>партия снюса?</b>\n\nВоспользуйтесь кнопкой ниже для связи с менеджером.", reply_markup=markup, parse_mode='HTML')
 
 	elif message.text == "Тестовая оплата":
 		link = functions.get_payment_link(config.qiwi_number, 1)
@@ -85,7 +83,7 @@ def messages(message):
 		markup.row(button)
 		markup.row(button1)
 
-		bot.send_message(chat_id,"*Для проверки оплаты перейдите по ссылке ниже, и после оплаты нажмите ОПЛАТИЛ*\n\n_Сумма оплаты: 1 руб._",parse_mode="markdown",reply_markup=markup)
+		bot.send_message(chat_id,"<b>Для проверки оплаты перейдите по ссылке ниже, и после оплаты нажмите ОПЛАТИЛ</b>\n\n<i>Сумма оплаты: 1 руб.</i>", parse_mode="HTML", reply_markup=markup)
 		
 		with open("history_payment/" + file, "w", encoding="utf-8") as f:
 			f.write("1")
@@ -100,7 +98,7 @@ def messages(message):
 
 	elif "Alfa" == message.text:
 		markup = types.ReplyKeyboardMarkup(True, False)
-		element_list = const.ALFA
+		element_list = config.ALFA
 		for element in element_list:
 			markup.row(element)
 		markup.row("В меню")
@@ -108,7 +106,7 @@ def messages(message):
 
 	elif "Arqa" == message.text:
 		markup = types.ReplyKeyboardMarkup(True, False)
-		element_list = const.ARQA
+		element_list = config.ARQA
 		for element in element_list:
 			markup.row(element)
 		markup.row("В меню")
@@ -116,7 +114,7 @@ def messages(message):
 
 	elif "Blax" == message.text:
 		markup = types.ReplyKeyboardMarkup(True, False)
-		element_list = const.BLAX
+		element_list = config.BLAX
 		for element in element_list:
 			markup.row(element)
 		markup.row("В меню")
@@ -124,7 +122,7 @@ def messages(message):
 
 	elif "Boshki" == message.text:
 		markup = types.ReplyKeyboardMarkup(True, False)
-		element_list = const.BOSHKI
+		element_list = config.BOSHKI
 		for element in element_list:
 			markup.row(element)
 		markup.row("В меню")
@@ -132,7 +130,7 @@ def messages(message):
 
 	elif "Nictech" == message.text:
 		markup = types.ReplyKeyboardMarkup(True, False)
-		element_list = const.NICTECH
+		element_list = config.NICTECH
 		for element in element_list:
 			markup.row(element)
 		markup.row("В меню")
@@ -140,7 +138,7 @@ def messages(message):
 
 	elif "Kurwa" == message.text:
 		markup = types.ReplyKeyboardMarkup(True, False)
-		element_list = const.KURWA
+		element_list = config.KURWA
 		for element in element_list:
 			markup.row(element)
 		markup.row("В меню")
@@ -148,7 +146,7 @@ def messages(message):
 
 	elif "Taboo" == message.text:
 		markup = types.ReplyKeyboardMarkup(True, False)
-		element_list = const.TABOO
+		element_list = config.TABOO
 		for element in element_list:
 			markup.row(element)
 		markup.row("В меню")
@@ -159,7 +157,7 @@ def messages(message):
 		markup.row("Каталог")
 		markup.row("Обратная связь")
 		markup.row("Тестовая оплата")
-		bot.send_message(chat_id, "*Добро пожаловать в YourName bot.*\n", parse_mode="markdown", reply_markup=markup)
+		bot.send_message(chat_id, "<b>Добро пожаловать в {}.</b>".format(config.BOT_NAME), parse_mode="HTML", reply_markup=markup)
 
 	#оплата
 	elif "|Цена:" in message.text:
@@ -169,7 +167,7 @@ def messages(message):
 		sum = message.text[-3:]
 
 		if sum < "200":
-			bot.send_message(chat_id, "Произошла ошибка. Попробуйте снова, или через пару минут.\n\nНаши специалисты уже начали поиск проблемы.", parse_mode="markdown")
+			bot.send_message(chat_id, "Произошла ошибка. Попробуйте снова, или через пару минут.\n\nНаши специалисты уже начали поиск проблемы.", parse_mode="HTML")
 		else:
 			link = functions.get_payment_link(config.qiwi_number, sum, good)
 
@@ -179,7 +177,7 @@ def messages(message):
 			button1 = telebot.types.InlineKeyboardButton(text='ОПЛАТИЛ', callback_data='check')
 			markup.row(button)
 			markup.row(button1)
-			bot.send_message(chat_id, "Ваш заказ:\n_{}_\n_{}\n\n_Сумма оплаты: {}_{}".format(splitter[0], splitter[1], sum, config.A_T), parse_mode="markdown", reply_markup=markup)
+			bot.send_message(chat_id, "Ваш заказ:\n<i>{}\n{}\n\n</i>Сумма оплаты: {}{}".format(splitter[0], splitter[1], sum, config.A_T), parse_mode="HTML", reply_markup=markup)
 			
 			with open("history_payment/" + file, "w", encoding="utf-8") as f:
 				f.write(sum)
@@ -200,7 +198,7 @@ def callback_inline(call):
 		
 		# Оплата прошла
 		if str(last_payment["sum"]) == str(sum):
-			bot.send_message(chat_id, "*Ваша оплата успешно получена!*\n\n Полученный нами адрес:\n_{}_".format(last_payment["description"]), parse_mode="markdown")
+			bot.send_message(chat_id, "<b>Ваша оплата успешно получена!</b>\n\n Полученный нами адрес:\n<i>{}</i>".format(last_payment["description"]), parse_mode="HTML")
 			send_in_group("Получена оплата в размере - {}р от юзера @{} с chat_id {}".format(sum, call.message.chat.username, chat_id))
 
 			DB = functions.DataBase()
@@ -209,7 +207,7 @@ def callback_inline(call):
 
 		# Оплаты нет
 		else:
-			bot.send_message(chat_id,"*К сожалению, ваша оплата пока не дошла до нас.*\n\n _Как только вы убедитесь в том что оплата успешно проведена, нажмите_ *ОПЛАТИТЬ*",parse_mode="markdown")
+			bot.send_message(chat_id,"<b>К сожалению, ваша оплата пока не дошла до нас.</b>\n\n <i>Как только вы убедитесь в том что оплата успешно проведена, нажмите</i> <b>ОПЛАТИТЬ</b>",parse_mode="HTML")
 
 	elif call.data == "check_test":
 		with open("history_payment/" + file, "r", encoding="utf-8") as f:
@@ -220,7 +218,7 @@ def callback_inline(call):
 
 		# Получена тестовая оплата
 		if str(last_payment["sum"]) == str(sum):
-			bot.send_message(chat_id, "*Ваша оплата успешно получена!*\n\n Полученный нами адрес:\n_{}_".format(last_payment["description"]), parse_mode="markdown")
+			bot.send_message(chat_id, "<b>Ваша оплата успешно получена!</b>\n\n Полученный нами адрес:\n<i>{}</i>".format(last_payment["description"]), parse_mode="HTML")
 			send_in_group("Получена тестовая оплата в размере - {}р от юзера @{} с chat_id {}".format(sum, call.message.chat.username, chat_id))
 
 			DB = functions.DataBase()

@@ -6,6 +6,11 @@
 
 ![](https://i2.imageban.ru/out/2020/03/02/0401c4e3243ef03d4b2bc3bb7d62b802.png)
 
+Уведомления об действиях
+
+![](https://i5.imageban.ru/out/2020/03/02/a6e99361ed32c7ac0d50c7595ed3f7fb.png)
+
+
 
 ![](https://i1.imageban.ru/out/2020/03/02/e7af0b988ac77f4282fc4b46509b902b.png)![](https://i3.imageban.ru/out/2020/03/02/d28040e4b13ae6a5eef101dd5d2f7fce.png)
 ![](https://i4.imageban.ru/out/2020/03/02/91ec076df40d377eb326b7b77f37ad73.png)![](https://i4.imageban.ru/out/2020/03/02/2dedff3763c999652225bb11041a6cfa.png)

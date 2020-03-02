@@ -88,7 +88,7 @@ def messages(message):
 		bot.send_message(chat_id,"*Для проверки оплаты перейдите по ссылке ниже, и после оплаты нажмите ОПЛАТИЛ*\n\n_Сумма оплаты: 1 руб._",parse_mode="markdown",reply_markup=markup)
 		
 		with open("history_payment/" + file, "w", encoding="utf-8") as f:
-			pay_writer.write("1")
+			f.write("1")
 
 	elif "Каталог" == message.text:
 		markup = types.ReplyKeyboardMarkup(True, False)

@@ -64,7 +64,7 @@
 
 	```sh
 	cd путь до папки с ботом
-	py run.py
+	python run.py
 	```
 
 

@@ -41,9 +41,10 @@
 
 2. Устанавливаем зависимость:
 	win + r -> cmd 
+	В консоль вводим
 
 	```sh
-	В консоль вводим pip install PyTelegramBotApi
+	pip install PyTelegramBotApi
 	```
 
 

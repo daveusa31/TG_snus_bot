@@ -4,7 +4,7 @@ BOT_NAME = "MY bot" # Назване для бота(показывается п
 
 
 group_id = "" # Id группы для оповещений. Добавьте бота в группу @getmyid_bot
-admin_id =  # Ваш юзернейм. Получить в боте @getmyid_bot
+admin_id =  # Ваш chat_id. Получить в боте @getmyid_bot
 manager = "" # Ваш username (без @)
 
 

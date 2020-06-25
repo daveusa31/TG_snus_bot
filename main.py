@@ -69,7 +69,7 @@ def messages(message):
 
 	if message.text == "Обратная связь":
 		markup = telebot.types.InlineKeyboardMarkup()
-		button = telebot.types.InlineKeyboardButton(text='Cвязаться с менеджером', url="t.me/{}".format(config.manager))
+		button = telebot.types.InlineKeyboardButton(text='Cвязаться с менеджером', url="https://t.me/{}".format(config.manager))
 		markup.row(button)
 		bot.send_message(chat_id,"Возникли <b>вопросы?</b>\nНеобходима большая <b>партия снюса?</b>\n\nВоспользуйтесь кнопкой ниже для связи с менеджером.", reply_markup=markup, parse_mode='HTML')
 

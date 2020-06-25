@@ -1,3 +1,4 @@
+import os
 import time
 import config
 import telebot
@@ -30,6 +31,9 @@ def run_bot_loop():
 
 if __name__ == "__main__":
     logger("Start snus bot")
+    
+    if not "history_payment" in os.listdir("."):
+            os.mkdir("history_payment\\")
     while True:
         error = run_bot_loop()
         logger("Restart") 
@@ -39,8 +43,4 @@ if __name__ == "__main__":
         bot.send_document(config.admin_id, doc)
         doc.close()
 
-
         time.sleep(10)
-
-
-
